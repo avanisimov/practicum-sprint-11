@@ -3,6 +3,7 @@ package ru.yandex.practicum.sprint11
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,6 +23,23 @@ class MainActivity : AppCompatActivity() {
 
         val retrofit = Retrofit.Builder()
             .baseUrl("https://raw.githubusercontent.com/avanisimov/practicum-sprint-11/")
+            .client(
+                OkHttpClient.Builder()
+                    .addInterceptor {
+                        it.proceed(
+                            it.request()
+                                .newBuilder()
+                                .header("Authorization", "token")
+                                .build()
+                        )
+                    }
+                    .addInterceptor {
+                        Log.d(TAG, "MyInterceptor: url=${it.request().url()}")
+                        Log.d(TAG, "MyInterceptor: headers=${it.request().headers()}")
+                        it.proceed(it.request())
+                    }
+                    .build()
+            )
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val serverApi = retrofit.create(Sprint11ServerApi::class.java)
