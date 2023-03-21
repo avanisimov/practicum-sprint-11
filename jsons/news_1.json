@@ -1,0 +1,22 @@
+{
+  "result": "success",
+  "data": {
+    "title": "Some news",
+    "items": [
+      {
+        "id": 1,
+        "title": "Sport news",
+        "type": "sport",
+        "created": "2023-01-01T11:12:13:123",
+        "specificPropertyForSimpleType": "specificPropertyForSimpleType"
+      },
+      {
+        "id": 2,
+        "title": "Scientific news",
+        "type": "science",
+        "created": "2023-01-01T11:12:13:123",
+        "specific_property_for_complex_type": "specific_property_for_complex_type"
+      }
+    ]
+  }
+}
