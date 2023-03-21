@@ -41,10 +41,11 @@ class MainActivity : AppCompatActivity() {
             .build()
         val serverApi = retrofit.create(Sprint11ServerApi::class.java)
 
-        serverApi.getNews1().enqueue(object : Callback<NewsResponse> {
+        serverApi.getNews2().enqueue(object : Callback<NewsResponse> {
             override fun onResponse(call: Call<NewsResponse>, response: Response<NewsResponse>) {
                 Log.d(TAG, "onResponse: ${response.body()}")
-                adapter.items = response.body()?.data?.items ?: emptyList()
+                adapter.items =
+                    response.body()?.data?.items?.filter { it !is NewsItem.Unknown } ?: emptyList()
             }
 
             override fun onFailure(call: Call<NewsResponse>, t: Throwable) {
@@ -60,6 +61,9 @@ class MainActivity : AppCompatActivity() {
 interface Sprint11ServerApi {
 
 
-    @GET("main/jsons/news_2.json")
+    @GET("main/jsons/news_1.json")
     fun getNews1(): Call<NewsResponse>
+
+    @GET("main/jsons/news_2.json")
+    fun getNews2(): Call<NewsResponse>
 }

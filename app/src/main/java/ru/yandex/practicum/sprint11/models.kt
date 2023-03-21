@@ -47,6 +47,24 @@ sealed class NewsItem {
     ) : NewsItem()
 
 
+    object Unknown : NewsItem() {
+        override val id: String
+            get() = ""
+        override val title: String
+            get() = ""
+        override val type: String
+            get() = ""
+        override val created: Date
+            get() = Date()
+    }
+
+    enum class Type {
+        @SerializedName("sport")
+        SPORT,
+
+        @SerializedName("science")
+        SCIENCE
+    }
 }
 
 
@@ -74,11 +92,20 @@ class NewsItemTypeAdapter : JsonDeserializer<NewsItem> {
         typeOfT: Type,
         context: JsonDeserializationContext
     ): NewsItem {
-        val type = json.asJsonObject.get("type").asString
+        val type = context.deserialize<NewsItem.Type>(
+            json.asJsonObject.get("type"),
+            NewsItem.Type::class.java
+        )
         return when (type) {
-            "sport" -> context.deserialize<NewsItem.Sport>(json, NewsItem.Sport::class.java)
-            "science" -> context.deserialize<NewsItem.Science>(json, NewsItem.Science::class.java)
-            else -> throw java.lang.IllegalStateException("there is no type for $type")
+            NewsItem.Type.SPORT -> context.deserialize<NewsItem.Sport>(
+                json,
+                NewsItem.Sport::class.java
+            )
+            NewsItem.Type.SCIENCE -> context.deserialize<NewsItem.Science>(
+                json,
+                NewsItem.Science::class.java
+            )
+            else -> NewsItem.Unknown
         }
     }
 

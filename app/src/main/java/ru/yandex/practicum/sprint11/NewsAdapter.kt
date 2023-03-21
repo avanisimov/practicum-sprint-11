@@ -54,6 +54,9 @@ class NewsItemViewHolder(
             is NewsItem.Sport -> {
                 additionalInfo.text = item.specificPropertyForSport
             }
+            NewsItem.Unknown -> {
+                // ignore
+            }
         }
     }
 }
