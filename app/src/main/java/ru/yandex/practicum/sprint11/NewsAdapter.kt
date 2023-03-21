@@ -38,6 +38,7 @@ class NewsItemViewHolder(
 
     private val title: TextView = itemView.findViewById(R.id.title)
     private val created: TextView = itemView.findViewById(R.id.created)
+    private val additionalInfo: TextView = itemView.findViewById(R.id.additional_info)
 
     fun bind(item: NewsItem) {
         title.text = item.title
@@ -46,6 +47,13 @@ class NewsItemViewHolder(
                 DateFormat.SHORT,
                 DateFormat.SHORT
             ).format(item.created)
-
+        when (item) {
+            is NewsItem.Science -> {
+                additionalInfo.text = item.specificPropertyForScience
+            }
+            is NewsItem.Sport -> {
+                additionalInfo.text = item.specificPropertyForSport
+            }
+        }
     }
 }
