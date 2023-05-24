@@ -47,5 +47,16 @@ class NewsItemViewHolder(
                 DateFormat.SHORT
             ).format(item.created)
 
+        when (item) {
+            is NewsItem.ScienceNewsItem -> {
+                val prop: String = item.specificPropertyForScience
+            }
+            is NewsItem.SportNewsItem -> {
+                val prop: String = item.specificPropertyForSport
+
+            }
+            is NewsItem.Unknown -> TODO()
+        }
+
     }
 }
